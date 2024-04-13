@@ -1,7 +1,7 @@
 
 # Snake Multiplayer Client
 
-This repository is an implementation of the Snake game client. This project is carried out for the distributed computing course.
+This repository is an implementation of the Snake game client. This project is carried out for the distributed computing course
 
 
 ## Authors
@@ -17,4 +17,9 @@ This repository is an implementation of the Snake game client. This project is c
 **Client:** Python, Pygame
 
 **Server:** C
+
+
+## Lessons Learned
+
+run in pycharm
 
