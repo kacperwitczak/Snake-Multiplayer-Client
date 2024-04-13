@@ -51,9 +51,8 @@ try:
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((SERVER, PORT))
     client_socket.settimeout(0.1)  # Ustaw timeout na 100 ms
-
     size_data = client_socket.recv(4)
-    BOARD_SIZE = int.from_bytes(size_data, byteorder='little')
+    BOARD_SIZE = int.from_bytes(size_data)
     BOARD_MEM = BOARD_SIZE ** 2
 
 except Exception as e:
@@ -86,8 +85,10 @@ while running:
             board = [list(decoded_data[i:i + BOARD_SIZE]) for i in range(0, BOARD_MEM, BOARD_SIZE)]
             draw_board(board)
 
+
     except socket.timeout:
-        pass
+        print("Socket timeout")
+        break
     except Exception as e:
         print("Błąd podczas odbierania danych:", e)
         break
