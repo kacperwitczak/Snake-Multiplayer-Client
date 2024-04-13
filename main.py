@@ -7,7 +7,7 @@ SERVER = "127.0.0.1"
 PORT = 8888
 
 # Rozmiar okna gry
-WIDTH, HEIGHT = 600, 600
+WIDTH, HEIGHT = 500, 500
 
 # Kolory
 WHITE = (255, 255, 255)
@@ -15,6 +15,11 @@ BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
+PINK = (255, 0, 255)
+
+BOARD_SIZE = None
+BOARD_MEM = None
 
 # Inicjalizacja Pygame
 pygame.init()
@@ -28,8 +33,12 @@ def draw_board(board):
     for i, row in enumerate(board):
         for j, cell in enumerate(row):
             color = BLACK
-            if cell == 'H':
+            if cell == 'G':
                 color = GREEN
+            elif cell == 'Y':
+                color = YELLOW
+            elif cell == 'P':
+                color = PINK
             elif cell == 'B':
                 color = BLUE
             elif cell == 'F':
@@ -42,6 +51,11 @@ try:
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((SERVER, PORT))
     client_socket.settimeout(0.1)  # Ustaw timeout na 100 ms
+
+    size_data = client_socket.recv(4)
+    BOARD_SIZE = int.from_bytes(size_data, byteorder='little')
+    BOARD_MEM = BOARD_SIZE ** 2
+
 except Exception as e:
     print("Błąd podczas łączenia z serwerem:", e)
     pygame.quit()
@@ -65,11 +79,11 @@ while running:
                 client_socket.send(b'R')
 
     try:
-        data = client_socket.recv(900)  # Odbierz 900 bajtów, zakładając, że plansza jest rozmiaru 30x30
+        data = client_socket.recv(BOARD_MEM)  # Odbierz 900 bajtów, zakładając, że plansza jest rozmiaru 30x30
         if data:
             decoded_data = data.decode('utf-8')
             # Twórz listę list (planszę) z otrzymanego łańcucha znaków
-            board = [list(decoded_data[i:i + 30]) for i in range(0, 900, 30)]
+            board = [list(decoded_data[i:i + BOARD_SIZE]) for i in range(0, BOARD_MEM, BOARD_SIZE)]
             draw_board(board)
 
     except socket.timeout:
