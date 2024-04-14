@@ -11,5 +11,16 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 PINK = (255, 0, 255)
 
+MAGENTA = (255, 0, 255)
+CYAN = (0, 255, 255)
+BRONZE = (205, 127, 50)
+VIOLET = (170, 23, 222)
+SALMON = (255, 128, 128)
+TEAL = (0, 128, 128)
+ORANGE = (255, 165, 0)
+RUST = (140, 50, 11)
+ECRU = (194, 178, 128)
+
+
 # Window game size
 WIDTH, HEIGHT = 500, 500
