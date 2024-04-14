@@ -32,6 +32,23 @@ def draw_board(board, win):
                 color = BLUE
             elif cell == 'F':
                 color = RED
+           
+            elif cell == 'E':
+                color = ECRU
+            elif cell == 'S':
+                color = SALMON
+            elif cell == 'V':
+                color = VIOLET
+            elif cell == 'T':
+                color = TEAL
+            elif cell == 'O':
+                color = ORANGE          
+            elif cell == 'C':
+                color = CYAN
+            elif cell == 'M':
+                color = MAGENTA
+           
+            
             # Draw the rectangle for each cell
             pygame.draw.rect(win, color, (j * cell_width, i * cell_height, cell_width, cell_height))
     # Update the display to show the newly drawn board
