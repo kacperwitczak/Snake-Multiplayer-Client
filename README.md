@@ -14,12 +14,39 @@ This repository is an implementation of the Snake game client. This project is c
 
 ## Tech Stack
 
-**Client:** Python, Pygame
+<p align="left">
+<a href="https://docs.microsoft.com/en-us/cpp/?view=msvc-170" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/c-colored.svg" width="36" height="36" alt="C" /></a><a href="https://www.python.org/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/python-colored.svg" width="36" height="36" alt="Python" /></a>
+</p>
 
-**Server:** C
+
+## Run anywhere
+
+Clone the project
+
+```bash
+  git clone https://github.com/witczakxd/Snake-Multiplayer-Client
+```
+
+Go to the project directory
+
+```bash
+  cd Snake-Multiplayer-Client
+```
+
+Install requirements
+
+```bash
+  pip install requirements.txt
+```
+
+Run the game
+
+```bash
+  python main.py
+```
 
 
-## Lessons Learned
+## Run in IDE (recommended)
 
-run in pycharm
+Run in pycharm
 
