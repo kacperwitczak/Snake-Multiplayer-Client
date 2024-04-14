@@ -5,7 +5,7 @@ from components.constant import *
 
 
 def init_pygame():
-    # Pygame initialization
+    # Initialize the pygame library and set up the game window
     pygame.init()
     win = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Snake Game")
@@ -13,12 +13,15 @@ def init_pygame():
 
 
 def draw_board(board, win):
+    # Fill the game window with a white background
     win.fill(WHITE)
-    cell_width = WIDTH // len(board[0])  # Calculate cell width
-    cell_height = HEIGHT // len(board)  # Calculate cell height
+    # Calculate the width and height of each cell in the game grid
+    cell_width = WIDTH // len(board[0])
+    cell_height = HEIGHT // len(board)
+    # Iterate through the board and draw each cell with its corresponding color
     for i, row in enumerate(board):
         for j, cell in enumerate(row):
-            color = BLACK
+            color = BLACK  # Default color
             if cell == 'G':
                 color = GREEN
             elif cell == 'Y':
@@ -29,36 +32,41 @@ def draw_board(board, win):
                 color = BLUE
             elif cell == 'F':
                 color = RED
+            # Draw the rectangle for each cell
             pygame.draw.rect(win, color, (j * cell_width, i * cell_height, cell_width, cell_height))
+    # Update the display to show the newly drawn board
     pygame.display.update()
 
 
 def main():
-    # Invoke pygame init function
+    # Start pygame and open the game window
     win = init_pygame()
 
-    # Server connection
+    # Try to establish a connection with the game server
     try:
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_socket.connect((SERVER, PORT))
-        client_socket.settimeout(0.1)  # Set timeout = 100ms
+        client_socket.settimeout(0.1)  # Set a short timeout for socket operations
         size_data = client_socket.recv(4)
-        board_size = int.from_bytes(size_data)
+        board_size = int.from_bytes(size_data, byteorder='big')
         board_mem = board_size ** 2
 
     except Exception as e:
-        print("Błąd podczas łączenia z serwerem:", e)
+        # Handle exceptions during connection by quitting pygame and exiting
+        print("Error connecting to server:", e)
         pygame.quit()
         sys.exit()
 
-    # Main game loop
+    # Game loop: handles game updates and user inputs
     clock = pygame.time.Clock()
     running = True
     while running:
+        # Process pygame events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
+                # Send movement commands to the server based on key presses
                 if event.key == pygame.K_UP:
                     client_socket.send(b'U')
                 elif event.key == pygame.K_DOWN:
@@ -68,23 +76,25 @@ def main():
                 elif event.key == pygame.K_RIGHT:
                     client_socket.send(b'R')
 
+        # Try to receive and handle the game board data from the server
         try:
-            data = client_socket.recv(board_mem)  # Receive 900 bytes, assuming a 30x30 board
+            data = client_socket.recv(board_mem)
             if data:
                 decoded_data = data.decode('utf-8')
-                # Create list of lists from received string
-                board = [list(decoded_data[i:i + board_size]) for i in range(0, board_mem, board_size)]
+                board = [list(decoded_data[i:i + board_size]) for i in range(0, len(decoded_data), board_size)]
                 draw_board(board, win)
 
         except socket.timeout:
             print("Socket timeout")
             break
         except Exception as e:
-            print("Błąd podczas odbierania danych:", e)
+            print("Error receiving data:", e)
             break
 
+        # Limit the frame rate to 60 frames per second
         clock.tick(60)
 
+    # Clean up pygame resources when the game loop ends
     pygame.quit()
 
 
