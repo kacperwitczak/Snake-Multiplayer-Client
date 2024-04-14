@@ -56,7 +56,7 @@ def main():
     try:
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # IPv4, TCP
         client_socket.connect((SERVER, PORT)) #connecting to server (IP) on specific port
-        client_socket.settimeout(0.1)  # Set a short timeout for socket operations
+        client_socket.settimeout(0.3)  # Set a short timeout for socket operations
 
         #receive board parameters from server
         size_data = client_socket.recv(4)
